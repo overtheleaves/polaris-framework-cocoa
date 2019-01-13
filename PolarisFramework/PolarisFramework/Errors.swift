@@ -14,6 +14,8 @@ enum DatabaseError: Error, CustomStringConvertible {
     case failOpenDatabase
     case failAddData(reasons: Any...)
     case failGetData(reasons: Any...)
+    case illegalObjectError
+    case idNotFound
     
     var description: String {
         switch self {
@@ -29,6 +31,12 @@ enum DatabaseError: Error, CustomStringConvertible {
             return "Error occurs when add data: " + stringReasons(reasons)
         case let .failGetData(reasons):
             return "Error occurs when get data: " + stringReasons(reasons)
+        case .illegalObjectError:
+            return "Error occurs when use illegal objects.\n"
+                + "The object should be returned object by objects() functions of DatabaseHelper."
+        case .idNotFound:
+            return "Cannot find ID into object."
+                + "The object should be returned object by objects() functions of DatabaseHelper."
         }
     }
     

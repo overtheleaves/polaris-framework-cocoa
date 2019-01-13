@@ -20,6 +20,11 @@ class DatabaseHelper {
     /// prefix of the foreign keys field (meta)
     static public let FIELD_FOREIGN_KEYS_PREFIX: String = "__foreign_keys_of_"
     
+    /// prefix of date field
+    /// Reflection cannot capture Date type.
+    /// so need to indicate the date field
+    static public let FIELD_DATE_PREFIX: String = "__date_"
+    
     /// name of the type field (meta)
     static public let FIELD_META_TYPE = "__type"
     
@@ -30,6 +35,7 @@ class DatabaseHelper {
     static internal var schemas: [String:DatabaseObject.Type] = [:]
     
     var database: Database
+    
     
     /// Prepare database (build schema of DatabaseObject models)
     ///
@@ -63,6 +69,7 @@ class DatabaseHelper {
             }
         }
     }
+    
 
     /// Initialization database helper with options
     ///
@@ -79,6 +86,7 @@ class DatabaseHelper {
         }
     }
     
+    
     /// Save the object into database.
     ///
     /// - Parameters:
@@ -87,9 +95,10 @@ class DatabaseHelper {
     ///     - `DatabaseError.failAddData`: An error when fail to add document into database
     /// - Returns:
     ///     - a new string of saved document id
-    func add(_ object: DatabaseObject) throws -> String? {
-        return try database.add(object)
+    func add(_ object: DatabaseObject) throws {
+        try database.add(object)
     }
+    
     
     /// Save the objects into database with batch operation
     ///
@@ -97,11 +106,12 @@ class DatabaseHelper {
     ///     - objects: array of the objects
     /// - Returns:
     ///     - a new string array of saved document ids
-    func addBatch(_ objects: [DatabaseObject]) throws -> [String?] {
-        return try database.addBatch(objects)
+    func addBatch(_ objects: [DatabaseObject]) throws {
+        try database.addBatch(objects)
     }
     
-    /// Delete the object into database.
+    
+    /// Delete the object.
     /// The object should be returned object by objects() functions of DatabaseHelper.
     ///
     /// - Parameters:
@@ -110,20 +120,32 @@ class DatabaseHelper {
         try database.delete(object)
     }
     
-    /// Delete all the objects into database
+    
+    /// Delete the objects.
+    /// The objects should be returned object by objects() functions of DatabaseHelper.
     ///
-    func delete() throws {
-        try database.delete()
+    /// - Parameters:
+    ///     - object: the objects
+    func deleteBatch(_ objects: [DatabaseObject]) throws {
+        try database.delete(objects)
     }
     
+    
+    /// Delete all the objects into database
+    ///
+    func deleteAll() throws {
+        try database.deleteAll()
+    }
+    
+    
     /// Delete the object by unique id.
-    /// The object is no need to be returned object by objects() functions of DatabaseHelper.
     ///
     /// - Parameters:
     ///     - id: the id of the object
     func deleteById(_ id: String) throws {
         try database.deleteById(id)
     }
+    
 
     /// Read all the match typed objects from the database.
     /// Returned objects are mutable. When the returned objects are modified, it can be automatically
@@ -137,6 +159,7 @@ class DatabaseHelper {
         return try database.objects(type)
     }
     
+    
     /// Read limit count of the match typed object from the database.
     /// Returned objects are mutable. When the returned objects are modified, it can be automatically
     /// commited into database.
@@ -149,6 +172,7 @@ class DatabaseHelper {
     func objects<Element: DatabaseObject>(_ type: Element.Type, limit: Int) throws -> [Element] {
         return try database.objects(type, limit: limit)
     }
+    
     
     /// Read object by id
     ///
@@ -164,10 +188,11 @@ class DatabaseHelper {
 
 /// Database protocol
 protocol Database {
-    func add(_ object: DatabaseObject) throws -> String?
-    func addBatch(_ objects: [DatabaseObject]) throws -> [String?]
+    func add(_ object: DatabaseObject) throws
+    func addBatch(_ objects: [DatabaseObject]) throws
     func delete(_ object: DatabaseObject) throws
-    func delete() throws
+    func delete(_ objects: [DatabaseObject]) throws
+    func deleteAll() throws
     func deleteById(_ id: String) throws
     func objects<Element: DatabaseObject>(_ type: Element.Type) throws -> [Element]
     func objects<Element: DatabaseObject>(_ type: Element.Type, limit: Int) throws -> [Element]
@@ -178,6 +203,7 @@ protocol Database {
 class CBLDatabase: Database {
     
     var database: CouchbaseLiteSwift.Database
+    
     
     /// Initialize Couchbase database
     ///
@@ -191,6 +217,7 @@ class CBLDatabase: Database {
         }
     }
     
+    
     /// Save the object into database.
     /// Change the object into the MutableDocument and save document.
     ///
@@ -199,18 +226,19 @@ class CBLDatabase: Database {
     /// - Throws:
     ///     - `DatabaseError.failAddData`: An error when fail to add document into database
     /// - Returns:
-    ///     - a new string of saved document id
-    func add(_ object: DatabaseObject) throws -> String? {
+    ///     - mutable DatabaseObject
+    func add(_ object: DatabaseObject) throws {
         
         let doc = try objectToDocument(object)
        
         do {
             try database.saveDocument(doc)
-            return doc.id
+            object.id = doc.id
         } catch {
             throw DatabaseError.failAddData(reasons: error)
         }
     }
+    
     
     /// Save the objects into database with batch operation
     /// Change all the objects into MutableDocuments and batch save operations.
@@ -219,9 +247,8 @@ class CBLDatabase: Database {
     /// - Parameters:
     ///     - objects: array of the objects
     /// - Returns:
-    ///     - a new string array of saved document ids
-    func addBatch(_ objects: [DatabaseObject]) throws -> [String?] {
-        var ids: [String?] = []
+    ///     - mutable DatabaseObjects
+    func addBatch(_ objects: [DatabaseObject]) throws {
         var docs: [MutableDocument] = []
 
         // change object into MutableDocument
@@ -232,31 +259,59 @@ class CBLDatabase: Database {
         
         // run batch operation
         try database.inBatch {
-            for doc in docs {
+            for i in 0..<docs.count {
+                let doc = docs[i]
+                let obj = objects[i]
                 try database.saveDocument(doc)
+                obj.id = doc.id
             }
         }
-        
-        // collect ids
-        for doc in docs {
-            ids.append(doc.id)
-        }
-       
-        return ids
     }
     
     func deleteById(_ id: String) throws {
+        guard let doc = database.document(withID: id)
+            else { throw DatabaseError.failGetData(reasons: "Document not existed") }
+        
+        try database.deleteDocument(doc)
     }
     
     func delete(_ object: DatabaseObject) throws {
-
+        guard let docId = object.id
+            else { throw DatabaseError.idNotFound }
+        
+        try deleteById(docId)
+    }
+    
+    func delete(_ objects: [DatabaseObject]) throws {
+        
+        var ids: [String] = []
+        
+        // collect objects' ids
+        for object in objects {
+            guard let id = object.id
+                else { throw DatabaseError.idNotFound }
+            
+            ids.append(id)
+        }
+        
+        // fetch documents
+        let docs = database.documents(withIDs: ids)
+        
+        // delete document (batch operation)
+        try database.inBatch {
+            for doc in docs {
+                try database.deleteDocument(doc)
+            }
+        }
     }
 
+    
     /// Delete all the objects into database
     ///
-    func delete() throws {
+    func deleteAll() throws {
         try database.delete()
     }
+    
     
     /// Read all the match typed objects from the database.
     /// Returned objects are mutable. When the returned objects are modified,
@@ -299,7 +354,7 @@ class CBLDatabase: Database {
                     else { continue }
                 
                 var dict = dictObj.toDictionary()
-                resolveForeignObjects(type, dict: &dict)
+                resolveObjects(type, dict: &dict)
                 
                 results.append(Element.object(type, id: id, dict: dict))
             }
@@ -310,6 +365,7 @@ class CBLDatabase: Database {
         
         return results
     }
+    
     
     /// Read limit count of the match typed object from the database.
     /// Returned objects are mutable. When the returned objects are modified, it can be automatically
@@ -348,7 +404,7 @@ class CBLDatabase: Database {
                     else { continue }
                 
                 var dict = dictObj.toDictionary()
-                resolveForeignObjects(type, dict: &dict)
+                resolveObjects(type, dict: &dict)
                 
                 results.append(Element.object(type, id: id, dict: dict))
             }
@@ -358,6 +414,7 @@ class CBLDatabase: Database {
         
         return results
     }
+    
     
     /// Read object by id
     ///
@@ -373,27 +430,29 @@ class CBLDatabase: Database {
             }
         
         var dict = doc.toDictionary()
-        resolveForeignObjects(type, dict: &dict)
+        resolveObjects(type, dict: &dict)
         return Element.object(type, id: id, dict: dict)
     }
     
-    /// Resolve foerign objects
-    /// Iterate the dictionary and find the key name has DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX.
+    
+    /// Resolve objects
+    /// Iterate the dictionary and find the key name has DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX
+    /// or FIELD_DATE_PREFIX.
     /// The value of those keys are the array of documents ids of foreign objects.
-    /// Fetch foreign documents and change them into objects.
+    /// Fetch foreign documents and convert them into objects.
     /// After all, resolve the objects into the original field of the dictionary.
     ///
     /// - Parameters:
     ///     - type: the type of object
-    ///     - dict: the dictionary which is changed from the document
-    func resolveForeignObjects<Element: DatabaseObject>(_ type: Element.Type, dict: inout Dictionary<String, Any>) {
+    ///     - dict: the dictionary which is converted from the document
+    func resolveObjects<Element: DatabaseObject>(_ type: Element.Type, dict: inout Dictionary<String, Any>) {
         
         let types = Reflection.getTypesOfProperties(in: type) ?? [:]
         
         // save foreign documents into ditionary
         for fieldName in dict.keys {
             if fieldName.hasPrefix(DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX) {
-                let name = fieldName.replacingOccurrences(of: DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX,
+                let originalFieldName = fieldName.replacingOccurrences(of: DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX,
                                                           with: "")
                 var foreignInstances: [Any] = []
                 
@@ -413,17 +472,29 @@ class CBLDatabase: Database {
                 }
                 
                 // check if DatabaseObject property is array
-                if "\(types[name] ?? "")" == "NSArray" {
-                    dict[name] = foreignInstances
+                if "\(types[originalFieldName] ?? "")" == "NSArray" {
+                    dict[originalFieldName] = foreignInstances
                 } else {
                     // if not array, just save one of documents
                     if foreignInstances.count > 0 {
-                        dict[name] = foreignInstances[0]
+                        dict[originalFieldName] = foreignInstances[0]
                     }
                 }
+                
+            } else if fieldName.hasPrefix(DatabaseHelper.FIELD_DATE_PREFIX) {
+                let originalFieldName = fieldName.replacingOccurrences(of: DatabaseHelper.FIELD_DATE_PREFIX,
+                                                          with: "")
+                guard let isoDate = dict[fieldName]
+                    else { continue }
+                
+                guard let date = Date.convertIsoToDate(iso: isoDate as! String)
+                    else { continue }
+                
+                dict[originalFieldName] = date
             }
         }
     }
+        
     
     /// Return foreign keys field name
     ///
@@ -435,6 +506,18 @@ class CBLDatabase: Database {
         return DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX + name
     }
     
+    
+    /// Return date field name
+    ///
+    /// - Parameters:
+    ///     - name: the name of original field name
+    /// - Returns:
+    ///     - the name of the date field of the original field
+    private func dateFieldName(_ name: String) -> String {
+        return DatabaseHelper.FIELD_DATE_PREFIX + name
+    }
+    
+    
     /// Convert document to Object
     ///
     /// - Parameters:
@@ -445,6 +528,7 @@ class CBLDatabase: Database {
     private func documentToObject<Element: DatabaseObject>(_ type: Element.Type, document: Document) -> Element {
         return Element.object(type, id: document.id, dict: document.toDictionary())
     }
+    
     
     /// Convert object to Document
     ///
@@ -470,15 +554,10 @@ class CBLDatabase: Database {
             case let int64val as Int64:
                 doc.setInt64(int64val, forKey: name)
             case let dateval as Date:
-                doc.setDate(dateval, forKey: name)
+                let fieldName = dateFieldName(name)
+                doc.setDate(dateval, forKey: fieldName)
             case let floatval as Float:
                 doc.setFloat(floatval, forKey: name)
-                //            case let dictval as DictionaryObject:
-                //                doc.setDictionary(dictval, forKey: name)
-                //            case let arrval as ArrayObject:
-                //                doc.setArray(arrval, forKey: name)
-                //            case let blobval as Blob:
-            //                doc.setBlob(blobval, forKey: name)
             case let doubleval as Double:
                 doc.setDouble(doubleval, forKey: name)
             case let boolval as Bool:
@@ -486,30 +565,30 @@ class CBLDatabase: Database {
             case let numval as NSNumber:
                 doc.setNumber(numval, forKey: name)
             case let objval as DatabaseObject:  // x:1 relationship
-                let id = try add(objval)
+                try add(objval)
                 let fieldName = foreignKeysFieldName(name)
                 let foreignKeysArr = doc.createArrayIfNotExisted(forKey: fieldName)
                 
-                foreignKeysArr.addString(id)
+                foreignKeysArr.addString(objval.id)
                 doc.setArray(foreignKeysArr, forKey: fieldName)
             case let arrval as [DatabaseObject]:  // x:x relationship
-                let ids = try addBatch(arrval)
+                try addBatch(arrval)
                 let fieldName = foreignKeysFieldName(name)
                 let foreignKeysArr = doc.createArrayIfNotExisted(forKey: fieldName)
                 
-                for id in ids {
-                    foreignKeysArr.addString(id)
+                for obj in arrval {
+                    foreignKeysArr.addString(obj.id)
                 }
                 
                 doc.setArray(foreignKeysArr, forKey: fieldName)
-                
             default:
-                doc.setValue(value, forKey: name)
+                continue
             }
         }
         
         return doc
     }
+    
     
     /// Convert CouchbaseLiteSwift.Result to object
     ///

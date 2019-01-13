@@ -10,16 +10,12 @@ import Foundation
 
 class DatabaseObject: NSObject {
     
-    private var _id: String = ""
+    public internal(set) var id: String?
     required override init() { }
-    
-    public func id() -> String {
-        return self._id
-    }
     
     class func object<Element: DatabaseObject>(_ type: Element.Type, id: String, dict: Dictionary<String, Any>) -> Element {
         let element = type.init()
-        element._id = id
+        element.id = id
         
         guard let properties = Reflection.getTypesOfProperties(in: type)
             else {
@@ -28,18 +24,7 @@ class DatabaseObject: NSObject {
         
         for (name, value) in dict {
             if properties[name] != nil {
-                if name.hasPrefix(DatabaseHelper.FIELD_FOREIGN_KEYS_PREFIX)
-                    || name == DatabaseHelper.FIELD_META_TYPE {
-                    // foreign keys meta field
-                    continue
-                } else {
-                    if "\(properties[name] ?? "")" == "Date" {
-                        // string to date
-                        
-                    } else {
-                        element.setValue(value, forKey: name)
-                    }
-                }
+                 element.setValue(value, forKey: name)
             }
         }
         

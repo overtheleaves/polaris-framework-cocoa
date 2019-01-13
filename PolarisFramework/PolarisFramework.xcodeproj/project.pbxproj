@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE2778C721EB1E1200E3D1E2 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE2778C621EB1E1200E3D1E2 /* DateExtension.swift */; };
 		FE6C9F8021DF413800401BE6 /* PolarisFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6C9F7E21DF413800401BE6 /* PolarisFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6C9F8421DF414100401BE6 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6C9EFE21DF022B00401BE6 /* DatabaseHelper.swift */; };
 		FE6C9F8521DF414100401BE6 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6C9F1321DF370200401BE6 /* StringExtension.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FE2778C621EB1E1200E3D1E2 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		FE6C9EFD21DF022B00401BE6 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		FE6C9EFE21DF022B00401BE6 /* DatabaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		FE6C9F1121DF05D200401BE6 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				FE6C9F7E21DF413800401BE6 /* PolarisFramework.h */,
 				FE6C9F7F21DF413800401BE6 /* Info.plist */,
 				FE6C9FAB21E470AF00401BE6 /* DatabaseObject.swift */,
+				FE2778C621EB1E1200E3D1E2 /* DateExtension.swift */,
 			);
 			path = PolarisFramework;
 			sourceTree = "<group>";
@@ -238,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE6C9FAC21E470AF00401BE6 /* DatabaseObject.swift in Sources */,
+				FE2778C721EB1E1200E3D1E2 /* DateExtension.swift in Sources */,
 				FE6C9F8721DF414100401BE6 /* Errors.swift in Sources */,
 				FE6C9F8521DF414100401BE6 /* StringExtension.swift in Sources */,
 				FE6C9F8421DF414100401BE6 /* DatabaseHelper.swift in Sources */,

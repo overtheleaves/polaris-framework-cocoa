@@ -25,7 +25,7 @@ class DatabaseHelperTests: XCTestCase {
 
     override func tearDown() {
         do {
-            try cblhelper?.delete()
+            try cblhelper?.deleteAll()
         } catch  {
             print(error)
         }
@@ -40,8 +40,8 @@ class DatabaseHelperTests: XCTestCase {
         myDog.age = 1
         
         do {
-            let id = try cblhelper?.add(myDog)
-            let dog = try cblhelper?.objectById(Dog.self, id: id!)
+            try cblhelper?.add(myDog)
+            let dog = try cblhelper?.objectById(Dog.self, id: myDog.id!)
             
             XCTAssert(myDog == dog)
 
@@ -56,7 +56,7 @@ class DatabaseHelperTests: XCTestCase {
         all.strField = "test"
         all.intField = 0x7FFFFFFFFFFFFFFF
         all.int64Field = 0x7FFFFFFFFFFFFFFF
-        //all.dateField = Date()
+        all.dateField = Date()
         all.floatField = 0.1
         all.doubleField = 0.2
         all.boolField = true
@@ -67,8 +67,8 @@ class DatabaseHelperTests: XCTestCase {
 
         do {
             // add item and get by id
-            let id = try cblhelper?.add(all)
-            let ret = try cblhelper?.objectById(AllTypeTestObject.self, id: id!)
+            try cblhelper?.add(all)
+            let ret = try cblhelper?.objectById(AllTypeTestObject.self, id: all.id!)
             
             // assert
             XCTAssert(all == ret)
@@ -92,16 +92,14 @@ class DatabaseHelperTests: XCTestCase {
         
         do {
             let batchItems = [dog1, dog2, dog3]
-            let ids = try cblhelper?.addBatch(batchItems)
-            
-            print(ids)
-            
-            // assert: check number of objects count
-            XCTAssert(ids!.count == 3, NSString(format: "found ids count = %d", ids!.count) as String)
-            
-            for i in 0..<ids!.count {
-                guard let id = ids![i]
-                    else { continue }
+            try cblhelper?.addBatch(batchItems)
+         
+            for i in 0..<batchItems.count {
+                guard let id = batchItems[i].id
+                    else {
+                        XCTFail()
+                        return
+                }
                 
                 let retDog = try cblhelper?.objectById(Dog.self, id: id)
                 
@@ -113,13 +111,99 @@ class DatabaseHelperTests: XCTestCase {
             print(error)
         }
     }
+    
+    func testDeleteObject() {
+        let dog = Dog()
+        dog.name = "Amy"
+        dog.age = 1
+        
+        do {
+            // add dog
+            try cblhelper?.add(dog)
+            
+            // check whether the dog object is added correctly
+            guard let id = dog.id
+                else {
+                    XCTFail()
+                    return
+            }
+            
+            // delete and check assert
+            try cblhelper?.delete(dog)
+            XCTAssertNil(try cblhelper?.objectById(Dog.self, id: id))
+            
+        } catch {
+            print(error)
+        }
+    }
+    
+    func testDeleteObjects() {
+        let dog1 = Dog()
+        dog1.name = "Amy"
+        dog1.age = 1
+        let dog2 = Dog()
+        dog2.name = "Bread"
+        dog2.age = 2
+        let dog3 = Dog()
+        dog3.name = "Chobby"
+        dog3.age = 3
+        
+        do {
+            // add dog objects
+            let dogs = [dog1, dog2, dog3]
+            try cblhelper?.addBatch(dogs)
+            
+            // check whether the dog objects are added correctly
+            for i in 0..<dogs.count {
+                guard let _ = dogs[i].id
+                    else {
+                        XCTFail()
+                        return
+                }
+            }
+            
+            // delete and check assert
+            try cblhelper?.deleteBatch(dogs)
+            
+            for i in 0..<dogs.count {
+                guard let id = dogs[i].id
+                    else { continue }
+                XCTAssertNil(try cblhelper?.objectById(Dog.self, id: id))
+            }
+            
+        } catch {
+            print(error)
+        }
+    }
+    
+    func testDeleteById() {
+        let dog = Dog()
+        dog.name = "Amy"
+        dog.age = 1
+        
+        do {
+            try cblhelper?.add(dog)
+            guard let id = dog.id
+                else {
+                    XCTFail()
+                    return
+            }
+            
+            try cblhelper?.deleteById(id)
+            
+            XCTAssertNil(try cblhelper?.objectById(Dog.self, id: id))
+            
+        } catch {
+            print(error)
+        }
+    }
 }
 
 class AllTypeTestObject: DatabaseObject {
     @objc dynamic var strField: String
     @objc dynamic var intField: Int
     @objc dynamic var int64Field: Int64
-    //@objc dynamic var dateField: Date?
+    @objc dynamic var dateField: Date?
     @objc dynamic var floatField: Float
     @objc dynamic var doubleField: Double
     @objc dynamic var boolField: Bool
@@ -131,7 +215,7 @@ class AllTypeTestObject: DatabaseObject {
         self.strField = ""
         self.intField = 0
         self.int64Field = 0
-       // self.dateField = nil
+        self.dateField = nil
         self.floatField = 0.0
         self.doubleField = 0.0
         self.boolField = false
@@ -148,7 +232,6 @@ class AllTypeTestObject: DatabaseObject {
             return o.strField == self.strField
                 && o.intField == self.intField
                 && o.int64Field == self.int64Field
-            //    && o.dateField == self.dateField
                 && o.floatField == self.floatField
                 && o.boolField == self.boolField
                 && o.nsNumberField == self.nsNumberField
@@ -165,6 +248,10 @@ class AllTypeTestObject: DatabaseObject {
                     }
                     return true
                 }()
+                && .orderedSame == Calendar.current.compare(o.dateField!, to: self.dateField!,
+                                            toGranularity: Calendar.Component.second)
+            
+            
         }
         return false
     }

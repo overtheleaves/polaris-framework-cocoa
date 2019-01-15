@@ -6,8 +6,6 @@
 //  Copyright © 2019 overtheleaves. All rights reserved.
 //
 
-import Foundation
-
 extension Date {
     
     /// Convert iso string to Date. (ISO-8601, UTC)
@@ -16,7 +14,7 @@ extension Date {
     ///     - iso: string of date(format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     /// - Returns:
     ///     - date of the iso string
-    static func convertIsoToDate (iso: String) -> Date? {
+    public static func convertIsoToDate (iso: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
         dateFormatter.timeZone = TimeZone(abbreviation: "UTC")

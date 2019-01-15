@@ -9,7 +9,7 @@ import ObjectiveC.runtime
 
 class Reflection {
     
-    static let valueTypesMap: Dictionary<String, Any> = [
+    private static let valueTypesMap: Dictionary<String, Any> = [
         "c" : Int8.self,
         "s" : Int16.self,
         "i" : Int32.self,
@@ -23,7 +23,7 @@ class Reflection {
         "{" : Decimal.self
     ]
     
-    class func getTypesOfProperties(in clazz: NSObject.Type) -> Dictionary<String, Any>? {
+    public class func getTypesOfProperties(in clazz: NSObject.Type) -> Dictionary<String, Any>? {
         var count = UInt32()
         guard
             let properties = class_copyPropertyList(clazz, &count)
@@ -42,11 +42,11 @@ class Reflection {
         return types
     }
         
-    class func getSuperClass(in clazz: NSObject.Type) -> Any? {
+    public class func getSuperClass(in clazz: NSObject.Type) -> Any? {
         return class_getSuperclass(clazz)
     }
     
-    class func ClassGetSubclasses(in parentClass: NSObject.Type) -> Array<Any>? {
+    public class func ClassGetSubclasses(in parentClass: NSObject.Type) -> Array<Any>? {
         var numClasses = UInt32()
         guard let classes = objc_copyClassList(&numClasses)
             else { return nil }
@@ -68,7 +68,7 @@ class Reflection {
         return result;
     }
     
-    class func getClassName(in clazz: NSObject.Type) -> String {
+    public class func getClassName(in clazz: NSObject.Type) -> String {
         return NSString(utf8String: class_getName(clazz))! as String
     }
     

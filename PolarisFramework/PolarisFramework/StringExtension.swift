@@ -7,7 +7,7 @@
 //
 
 extension String {
-    func substring(start: Int, end: Int) -> String? {
+    public func substring(start: Int, end: Int) -> String? {
         if self.count < 1 {
             return nil
         }

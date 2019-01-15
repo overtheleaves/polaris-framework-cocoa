@@ -11,7 +11,7 @@ import XCTest
 
 class ReflectionTests: XCTestCase {
 
-    var testModel: ReflectionTestModel? = nil
+    fileprivate var testModel: ReflectionTestModel? = nil
     
     override func setUp() {
         super.setUp()
@@ -55,7 +55,7 @@ class ReflectionTests: XCTestCase {
     }
 }
 
-class ReflectionTestModel: DatabaseObject {
+fileprivate class ReflectionTestModel: DatabaseObject {
     @objc dynamic var name: String
     @objc dynamic var age: UInt
     @objc dynamic var isFemale: Bool
@@ -82,7 +82,7 @@ class ReflectionTestModel: DatabaseObject {
     }
 }
 
-class ReflectionTestSubModel: DatabaseObject {
+fileprivate class ReflectionTestSubModel: DatabaseObject {
     @objc dynamic var money: Decimal
     
     init(money: Decimal) {

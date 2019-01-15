@@ -6,12 +6,10 @@
 //  Copyright © 2019 overtheleaves. All rights reserved.
 //
 
-import Foundation
-
-class DatabaseObject: NSObject {
+open class DatabaseObject: NSObject {
     
     public internal(set) var id: String?
-    required override init() { }
+    required override public init() { }
     
     class func object<Element: DatabaseObject>(_ type: Element.Type, id: String, dict: Dictionary<String, Any>) -> Element {
         let element = type.init()

@@ -199,7 +199,7 @@ class DatabaseHelperTests: XCTestCase {
     }
 }
 
-class AllTypeTestObject: DatabaseObject {
+fileprivate class AllTypeTestObject: DatabaseObject {
     @objc dynamic var strField: String
     @objc dynamic var intField: Int
     @objc dynamic var int64Field: Int64
@@ -229,35 +229,70 @@ class AllTypeTestObject: DatabaseObject {
             else { return false }
         
         if let o = obj as? AllTypeTestObject {
-            return o.strField == self.strField
-                && o.intField == self.intField
-                && o.int64Field == self.int64Field
-                && o.floatField == self.floatField
-                && o.boolField == self.boolField
-                && o.nsNumberField == self.nsNumberField
-                && o.obj == self.obj
-                && {() -> Bool in
+            if o.strField != self.strField {
+                print("strField not match")
+                return false 
+            }
+            
+            if o.intField != self.intField {
+                print("intField not match")
+                return false
+            }
+            
+            if o.int64Field != self.int64Field {
+                print("int64Field not match")
+                return false
+            }
+            
+            if o.floatField != self.floatField {
+                print("floatField not match")
+                return false
+            }
+            
+            if o.boolField != self.boolField {
+                print("boolField not match")
+                return false
+            }
+            
+            if o.nsNumberField != self.nsNumberField {
+                print("nsNumberField not match")
+                return false
+            }
+            
+            if o.obj != self.obj {
+                print("obj not match")
+                return false
+            }
+            
+            if false == {() -> Bool in
                     if o.objs.count != self.objs.count {
+                        print("error - objs.count not match")
                         return false
                     }
                     
                     for i in 0..<o.objs.count {
                         if o.objs[i] != self.objs[i] {
+                            print("error - objs not match")
                             return false
                         }
                     }
                     return true
-                }()
-                && .orderedSame == Calendar.current.compare(o.dateField!, to: self.dateField!,
-                                            toGranularity: Calendar.Component.second)
+                }() {
+                return false
+            }
             
+            if .orderedSame != Calendar.current.compare(o.dateField!, to: self.dateField!,
+                                                        toGranularity: Calendar.Component.second) {
+                return false
+            }
             
+            return true
         }
         return false
     }
 }
 
-class SubObject: DatabaseObject {
+fileprivate class SubObject: DatabaseObject {
     @objc dynamic var name: String
     
     required init() {
@@ -269,18 +304,14 @@ class SubObject: DatabaseObject {
     }
     
     override func isEqual(_ object: Any?) -> Bool {
-        guard let obj = object
+        guard let obj = object as? SubObject
             else { return false }
         
-        if let o = obj as? SubObject {
-            return o.name == self.name
-        }
-        
-        return false
+        return obj.name == self.name
     }
 }
 
-class Dog: DatabaseObject {
+fileprivate class Dog: DatabaseObject {
     @objc dynamic var name: String
     @objc dynamic var age: Int
     

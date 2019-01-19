@@ -471,7 +471,11 @@ extension CouchbaseLiteSwift.Database {
             }
         }
         
-        dispatchGroup.wait(timeout: .distantFuture)
+        let dispatchTimeOutResult = dispatchGroup.wait(timeout: .distantFuture)
+        
+        if dispatchTimeOutResult == DispatchTimeoutResult.timedOut {
+            print("timeout - multiple documents fetch")
+        }
         return documents
     }
 }

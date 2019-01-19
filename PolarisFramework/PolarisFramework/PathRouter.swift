@@ -5,43 +5,92 @@
 //  Created by overtheleaves on 14/01/2019.
 //  Copyright © 2019 overtheleaves. All rights reserved.
 //
-
 import Foundation
 import UIKit
 
-public class URIResolver {
+public class PathRouter {
     
-    public var defaultBaseUrl: String = ""
-    var otherwiseType: URIResolvedUIViewController.Type? = nil
+    var otherwise: PathRouterHandleProtocol.Type? = nil
     var pathTrie: PathTrie = PathTrie()
     
-    public func register(_ path: String, type: URIResolvedUIViewController.Type) {
-        pathTrie.add(path, value: type)
+    public init() { }
+    
+    public func register(_ path: String, type: PathRouterHandleProtocol.Type) {
+        pathTrie.add(path, value: PathRouterItem(type: type, instance: nil, isInstance: false))
     }
     
-    public func otherwise(_ type: URIResolvedUIViewController.Type) {
-        self.otherwiseType = type
+    public func register(_ path: String, target: PathRouterHandleProtocol) {
+        pathTrie.add(path, value: PathRouterItem(type: nil, instance: target, isInstance: true))
     }
     
-    public func go(_ current: URIResolvedUIViewController, path: String) throws {
-        let (vc, params) = route(path)
-        guard let viewContoller = vc
+    public func otherwise(_ type: PathRouterHandleProtocol.Type) {
+        self.otherwise = type
+    }
+    
+    public func locationChange(_ from: PathRouterRequestProtocol, path: String) throws -> PathRouterHandleProtocol? {
+      
+        let (h, params) = route(path)
+        guard let handler = h
             else {
-                return
+                return nil
         }
-        
         viewContoller.params = params
         current.present(viewContoller, animated: true, completion: nil)
     }
     
     public func route(_ path: String) -> (URIResolvedUIViewController?, [String:Any]) {
-        let (value, params) = pathTrie.get(path)
+    public func route(_ path: String) -> (PathRouterHandleProtocol?, [String:Any]) {
         
-        guard let type = value as? URIResolvedUIViewController.Type ?? otherwiseType
-            else { return (nil, params) }
+        guard let urlComponents = URLComponents(string: path)
+            else {
+                return (nil, [:])
+        }
         
-        return (type.init(), params)
+        var (item, params) = pathTrie.get(urlComponents.path)
+        var ret: PathRouterHandleProtocol? = nil
+        
+        if let pathRouterItem = item as! PathRouterItem? {
+            if pathRouterItem.isInstance {
+                ret = pathRouterItem.instance
+            } else {
+                ret = pathRouterItem.type?.init()
+            }
+        } else {
+            if let type = otherwise {
+                ret = type.init()
+            }
+        }
+        
+        // extract queries
+        if let queryItems = urlComponents.queryItems {
+            for q in queryItems {
+                guard let value = q.value else {
+                    continue
+                }
+                
+                params[q.name] = value
+            }
+        }
+        
+        return (ret, params)
     }
+}
+
+struct PathRouterItem {
+    var type: PathRouterHandleProtocol.Type?
+    var instance: PathRouterHandleProtocol?
+    var isInstance: Bool
+}
+
+public protocol PathRouterRequestProtocol: class {
+    func locationChange(_ path: String) throws
+    func register(_ path: String, target: PathRouterHandleProtocol)
+    func onPathRouterRequestResult(identifier: String, result: [String:Any])
+}
+
+public protocol PathRouterHandleProtocol: class {
+    func handle(_ from: PathRouterRequestProtocol, params: [String:Any])
+    init()
 }
 
 class PathTrie {

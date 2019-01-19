@@ -7,7 +7,7 @@
 //
 import ObjectiveC.runtime
 
-class Reflection {
+public class Reflection {
     
     private static let valueTypesMap: Dictionary<String, Any> = [
         "c" : Int8.self,

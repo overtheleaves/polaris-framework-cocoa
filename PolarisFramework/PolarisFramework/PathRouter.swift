@@ -34,11 +34,11 @@ public class PathRouter {
             else {
                 return nil
         }
-        viewContoller.params = params
-        current.present(viewContoller, animated: true, completion: nil)
+
+        handler.handle(from, params: params)
+        return handler
     }
     
-    public func route(_ path: String) -> (URIResolvedUIViewController?, [String:Any]) {
     public func route(_ path: String) -> (PathRouterHandleProtocol?, [String:Any]) {
         
         guard let urlComponents = URLComponents(string: path)

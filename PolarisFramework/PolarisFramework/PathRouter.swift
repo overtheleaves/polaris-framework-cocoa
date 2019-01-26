@@ -15,12 +15,22 @@ public class PathRouter {
     
     public init() { }
     
-    public func register(_ path: String, type: PathRouterHandleProtocol.Type) {
-        pathTrie.add(path, value: PathRouterItem(type: type, instance: nil, isInstance: false))
+    public func register(_ path: String,
+                         type: PathRouterHandleProtocol.Type,
+                         options: PresentationOptions? = nil) {
+        pathTrie.add(path, value: PathRouterItem(type: type,
+                                                 instance: nil,
+                                                 isInstance: false,
+                                                 options: options))
     }
     
-    public func register(_ path: String, target: PathRouterHandleProtocol) {
-        pathTrie.add(path, value: PathRouterItem(type: nil, instance: target, isInstance: true))
+    public func register(_ path: String,
+                         target: PathRouterHandleProtocol,
+                         options: PresentationOptions? = nil) {
+        pathTrie.add(path, value: PathRouterItem(type: nil,
+                                                 instance: target,
+                                                 isInstance: true,
+                                                 options: options))
     }
     
     public func otherwise(_ type: PathRouterHandleProtocol.Type) {
@@ -29,27 +39,29 @@ public class PathRouter {
     
     public func locationChange(_ from: PathRouterRequestProtocol, path: String) throws -> PathRouterHandleProtocol? {
       
-        let (h, params) = route(path)
+        let (h, params, options) = route(path)
         guard let handler = h
             else {
                 return nil
         }
 
-        handler.handle(from, params: params)
+        handler.handle(from, params: params, options: options)
         return handler
     }
     
-    public func route(_ path: String) -> (PathRouterHandleProtocol?, [String:Any]) {
+    public func route(_ path: String) -> (PathRouterHandleProtocol?, [String:Any], PresentationOptions?) {
         
         guard let urlComponents = URLComponents(string: path)
             else {
-                return (nil, [:])
+                return (nil, [:], nil)
         }
         
         var (item, params) = pathTrie.get(urlComponents.path)
         var ret: PathRouterHandleProtocol? = nil
+        var options: PresentationOptions? = nil
         
         if let pathRouterItem = item as! PathRouterItem? {
+            options = pathRouterItem.options
             if pathRouterItem.isInstance {
                 ret = pathRouterItem.instance
             } else {
@@ -72,7 +84,17 @@ public class PathRouter {
             }
         }
         
-        return (ret, params)
+        return (ret, params, options)
+    }
+}
+
+public struct PresentationOptions {
+    public var modal: Bool
+    public var modalBackgroundColor: UIColor
+    
+    public init(modal: Bool = false, modalBackgroundColor: UIColor = UIColor.clear) {
+        self.modal = modal
+        self.modalBackgroundColor = modalBackgroundColor
     }
 }
 
@@ -80,6 +102,7 @@ struct PathRouterItem {
     var type: PathRouterHandleProtocol.Type?
     var instance: PathRouterHandleProtocol?
     var isInstance: Bool
+    var options: PresentationOptions?
 }
 
 public protocol PathRouterRequestProtocol: class {
@@ -89,7 +112,7 @@ public protocol PathRouterRequestProtocol: class {
 }
 
 public protocol PathRouterHandleProtocol: class {
-    func handle(_ from: PathRouterRequestProtocol, params: [String:Any])
+    func handle(_ from: PathRouterRequestProtocol, params: [String:Any], options: PresentationOptions?)
     init()
 }
 

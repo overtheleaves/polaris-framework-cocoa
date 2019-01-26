@@ -7,15 +7,55 @@
 //
 import Foundation
 
+
 open class PolarisUIViewController: UIViewController {
     
-    var openFrom: PathRouterRequestProtocol?
     var localPathRouter: PathRouter = PathRouter()
     var params: [String:Any] = [:]
+    
+    public var showNavigationBar: Bool = false
     public var identifier: String = ""
+    public var openFrom: PathRouterRequestProtocol?
+    public var stellaPresent: StellaTransition = StellaTransition()
+    public var stellaDismiss: StellaTransition = StellaTransition()
     
     public func getParam(_ name: String) -> Any? {
         return self.params[name]
+    }
+    
+    override open func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Hide the navigation bar on the this view controller
+        if !showNavigationBar {
+            self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        }
+    }
+    
+    override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        // Show the navigation bar on other view controllers
+        if !showNavigationBar {
+            self.navigationController?.setNavigationBarHidden(false, animated: animated)
+        }
+    }
+}
+
+extension PolarisUIViewController: UIViewControllerTransitioningDelegate {
+    
+    open func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if stellaPresent.useTransition {
+            return PresentAnimationController(stellaPresent)
+        }
+        return nil
+    }
+    
+    open func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        if stellaDismiss.useTransition {
+            return DismissAnimationController(stellaDismiss)
+        }
+        return nil
     }
 }
 
@@ -40,11 +80,28 @@ extension PolarisUIViewController: PathRouterRequestProtocol {
 }
 
 extension PolarisUIViewController: PathRouterHandleProtocol {
-    public func handle(_ from: PathRouterRequestProtocol, params: [String : Any]) {
+    public func handle(_ from: PathRouterRequestProtocol, params: [String : Any], options: PresentationOptions?) {
         self.params = params
         self.openFrom = from
         
-        Global.navigationController?.pushViewController(self, animated: true)
-        //vc.present(self, animated: true, completion: nil)
+        var handleModal: Bool = false
+        
+        if let options = options {
+            handleModal = options.modal
+        }
+        
+        if handleModal {
+            let vc = from as! UIViewController
+            
+            if let transitioningDelegate = vc as? UIViewControllerTransitioningDelegate {
+                self.transitioningDelegate = transitioningDelegate
+            }
+            
+            vc.present(self, animated: true, completion: nil)
+            
+        } else {
+            // default
+            Global.navigationController?.pushViewController(self, animated: false)
+        }
     }
 }

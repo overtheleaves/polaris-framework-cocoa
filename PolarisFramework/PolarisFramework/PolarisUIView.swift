@@ -30,7 +30,7 @@ open class PolarisUIView: UIView, PathRouterHandleProtocol, UIGestureRecognizerD
         self.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    open func handle(_ from: PathRouterRequestProtocol, params: [String : Any]) {
+    open func handle(_ from: PathRouterRequestProtocol, params: [String : Any], options: PresentationOptions?) {
         self.isHidden = false
     }
     

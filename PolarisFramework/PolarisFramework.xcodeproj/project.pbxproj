@@ -18,6 +18,7 @@
 		FE27794421F1745500E3D1E2 /* PolarisAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27794321F1745500E3D1E2 /* PolarisAppDelegate.swift */; };
 		FE27794821F174DA00E3D1E2 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27794721F174DA00E3D1E2 /* Global.swift */; };
 		FE27797221F2CCC900E3D1E2 /* PolarisUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27797121F2CCC900E3D1E2 /* PolarisUIView.swift */; };
+		FE27797F21F6F55D00E3D1E2 /* PresentAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE27797E21F6F55D00E3D1E2 /* PresentAnimationController.swift */; };
 		FE6C9F8021DF413800401BE6 /* PolarisFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FE6C9F7E21DF413800401BE6 /* PolarisFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FE6C9F8421DF414100401BE6 /* DatabaseHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6C9EFE21DF022B00401BE6 /* DatabaseHelper.swift */; };
 		FE6C9F8521DF414100401BE6 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6C9F1321DF370200401BE6 /* StringExtension.swift */; };
@@ -27,6 +28,9 @@
 		FE6C9FA621E1984900401BE6 /* PolarisFramework.framework in Copy Files (2 items) */ = {isa = PBXBuildFile; fileRef = FE6C9F7C21DF413800401BE6 /* PolarisFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FE6C9FA821E1AE9300401BE6 /* DatabaseHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6C9FA721E1AE9300401BE6 /* DatabaseHelperTests.swift */; };
 		FE6C9FAC21E470AF00401BE6 /* DatabaseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6C9FAB21E470AF00401BE6 /* DatabaseObject.swift */; };
+		FED3697521FBFBE200B4F2A8 /* DismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3697421FBFBE200B4F2A8 /* DismissAnimationController.swift */; };
+		FED3697A21FC1FB700B4F2A8 /* StellaTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3697921FC1FB700B4F2A8 /* StellaTransition.swift */; };
+		FED3697C21FC253B00B4F2A8 /* StellaAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3697B21FC253B00B4F2A8 /* StellaAnimator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -64,6 +68,7 @@
 		FE27794321F1745500E3D1E2 /* PolarisAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarisAppDelegate.swift; sourceTree = "<group>"; };
 		FE27794721F174DA00E3D1E2 /* Global.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		FE27797121F2CCC900E3D1E2 /* PolarisUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarisUIView.swift; sourceTree = "<group>"; };
+		FE27797E21F6F55D00E3D1E2 /* PresentAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentAnimationController.swift; sourceTree = "<group>"; };
 		FE6C9EFD21DF022B00401BE6 /* CouchbaseLiteSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteSwift.framework; sourceTree = "<group>"; };
 		FE6C9EFE21DF022B00401BE6 /* DatabaseHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatabaseHelper.swift; sourceTree = "<group>"; };
 		FE6C9F1121DF05D200401BE6 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
@@ -77,6 +82,9 @@
 		FE6C9F9021DF416F00401BE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FE6C9FA721E1AE9300401BE6 /* DatabaseHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseHelperTests.swift; sourceTree = "<group>"; };
 		FE6C9FAB21E470AF00401BE6 /* DatabaseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseObject.swift; sourceTree = "<group>"; };
+		FED3697421FBFBE200B4F2A8 /* DismissAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissAnimationController.swift; sourceTree = "<group>"; };
+		FED3697921FC1FB700B4F2A8 /* StellaTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StellaTransition.swift; sourceTree = "<group>"; };
+		FED3697B21FC253B00B4F2A8 /* StellaAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StellaAnimator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +129,7 @@
 		FE6C9F7D21DF413800401BE6 /* PolarisFramework */ = {
 			isa = PBXGroup;
 			children = (
+				FED3697821FC011200B4F2A8 /* transition */,
 				FE27793821EF524600E3D1E2 /* PathRouter.swift */,
 				FE6C9EFE21DF022B00401BE6 /* DatabaseHelper.swift */,
 				FE2778EC21EC09C900E3D1E2 /* CBLDatabase.swift */,
@@ -157,6 +166,17 @@
 				FE27791921EEBC1400E3D1E2 /* CouchbaseLiteSwift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FED3697821FC011200B4F2A8 /* transition */ = {
+			isa = PBXGroup;
+			children = (
+				FE27797E21F6F55D00E3D1E2 /* PresentAnimationController.swift */,
+				FED3697421FBFBE200B4F2A8 /* DismissAnimationController.swift */,
+				FED3697921FC1FB700B4F2A8 /* StellaTransition.swift */,
+				FED3697B21FC253B00B4F2A8 /* StellaAnimator.swift */,
+			);
+			path = transition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -278,9 +298,13 @@
 				FE6C9F8521DF414100401BE6 /* StringExtension.swift in Sources */,
 				FE27794821F174DA00E3D1E2 /* Global.swift in Sources */,
 				FE27793921EF524600E3D1E2 /* PathRouter.swift in Sources */,
+				FED3697521FBFBE200B4F2A8 /* DismissAnimationController.swift in Sources */,
+				FE27797F21F6F55D00E3D1E2 /* PresentAnimationController.swift in Sources */,
 				FE6C9F8421DF414100401BE6 /* DatabaseHelper.swift in Sources */,
+				FED3697A21FC1FB700B4F2A8 /* StellaTransition.swift in Sources */,
 				FE6C9F8621DF414100401BE6 /* Reflection.swift in Sources */,
 				FE27794421F1745500E3D1E2 /* PolarisAppDelegate.swift in Sources */,
+				FED3697C21FC253B00B4F2A8 /* StellaAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

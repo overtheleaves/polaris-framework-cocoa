@@ -69,7 +69,7 @@ public class DatabaseHelper {
     ///     - name: the name of the database. if it doesn't exist, then create.
     /// - Throws:
     ///     - `DatabaseError.notSupportedDatabase`: The given type cannot be supported
-    init(_ type: String, name: String) throws {
+    public init(_ type: String, name: String) throws {
         if type == DatabaseHelper.CBL {
             self.database = try CBLDatabase(name)
         } else {

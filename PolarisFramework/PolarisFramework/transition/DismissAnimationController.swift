@@ -2,7 +2,7 @@
 //  DismissAnimationController.swift
 //  PolarisFramework
 //
-//  Created by mirikim on 26/01/2019.
+//  Created by overtheleaves on 26/01/2019.
 //  Copyright © 2019 overtheleaves. All rights reserved.
 //
 
@@ -21,30 +21,36 @@ class DismissAnimationController: NSObject, UIViewControllerAnimatedTransitionin
     }
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-                
+        
         if !context.useTransition {
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            transitionContext.completeTransition(true)
             return
         }
         
-        guard let toView = transitionContext.view(forKey: .to)
+        guard let vc = transitionContext.viewController(forKey: .to),
+            let vc2 = transitionContext.viewController(forKey: .from),
+            let toVC = getPolarisViewController(vc),
+            let fromVC = getPolarisViewController(vc2),
+            let fromView = fromVC.view,
+            let toView = toVC.view
             else {
-                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+                transitionContext.completeTransition(true)
                 return
         }
         
+        let fromContext = fromVC.transitionContext
         let containerView = transitionContext.containerView
-        context.containerView = containerView
         
-        // save final view first
-        toView.frame = containerView.bounds
-        containerView.addSubview(toView)
-        toView.isHidden = true
+        fromContext.containerView = containerView
+        fromContext.makeMatchAnimation(context)
+        fromView.isHidden = true
         
-        context.animateConcurrent {
-            toView.isHidden = false
+        fromContext.animateConcurrent {
+            fromView.isHidden = false
+            fromView.removeFromSuperview()
             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
+       
     }
     
 }

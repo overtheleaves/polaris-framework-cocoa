@@ -18,9 +18,9 @@ class PathRouterTests: XCTestCase {
         pathRouter.register("test/to/{param}", type: BViewController.self)
         pathRouter.otherwise(CViewController.self)
         
-        let (target1, params1) = pathRouter.route("test/to/path/1/2?query1=aa&query2=bb")
-        let (target2, params2) = pathRouter.route("test/to/testparam")
-        let (target3, params3) = pathRouter.route("other/path")
+        let (target1, params1, _) = pathRouter.route("test/to/path/1/2?query1=aa&query2=bb")
+        let (target2, params2, _) = pathRouter.route("test/to/testparam")
+        let (target3, params3, _) = pathRouter.route("other/path")
         
         XCTAssert(target1 is AViewController)
         XCTAssert(target2 is BViewController)
@@ -32,12 +32,7 @@ class PathRouterTests: XCTestCase {
         XCTAssert(params1["query2"] as! String? == "bb")
         XCTAssert(params2["param"] as! String? == "testparam")
         XCTAssert(params3.count == 0)
-        
-        let view: UIView = UIView()
-        pathRouter.register("test/to/view", target: view)
-        let (target4, _) = pathRouter.route("test/to/view")
-        
-        XCTAssertNotNil(target4 is UIView)
+       
     }
     
     func testGoAndSendBack() {

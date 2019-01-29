@@ -16,8 +16,7 @@ open class PolarisUIViewController: UIViewController {
     public var showNavigationBar: Bool = false
     public var identifier: String = ""
     public var openFrom: PathRouterRequestProtocol?
-    public var stellaPresent: StellaTransition = StellaTransition()
-    public var stellaDismiss: StellaTransition = StellaTransition()
+    public var transitionContext: StellaTransition = StellaTransition()
     
     public func getParam(_ name: String) -> Any? {
         return self.params[name]
@@ -29,14 +28,7 @@ open class PolarisUIViewController: UIViewController {
         // Hide the navigation bar on the this view controller
         if !showNavigationBar {
             self.navigationController?.setNavigationBarHidden(true, animated: animated)
-        }
-    }
-    
-    override open func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        // Show the navigation bar on other view controllers
-        if !showNavigationBar {
+        } else {
             self.navigationController?.setNavigationBarHidden(false, animated: animated)
         }
     }
@@ -45,15 +37,15 @@ open class PolarisUIViewController: UIViewController {
 extension PolarisUIViewController: UIViewControllerTransitioningDelegate {
     
     open func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if stellaPresent.useTransition {
-            return PresentAnimationController(stellaPresent)
+        if transitionContext.useTransition {
+            return PresentAnimationController(transitionContext)
         }
         return nil
     }
     
     open func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        if stellaDismiss.useTransition {
-            return DismissAnimationController(stellaDismiss)
+        if transitionContext.useTransition {
+            return DismissAnimationController(transitionContext)
         }
         return nil
     }
@@ -97,11 +89,12 @@ extension PolarisUIViewController: PathRouterHandleProtocol {
                 self.transitioningDelegate = transitioningDelegate
             }
             
-            vc.present(self, animated: true, completion: nil)
-            
+            self.modalPresentationStyle = .overFullScreen
+            self.view.backgroundColor = options?.modalBackgroundColor
+            vc.present(self, animated:true, completion: nil)
         } else {
             // default
-            Global.navigationController?.pushViewController(self, animated: false)
+            Global.navigationController?.pushViewController(self, animated: true)
         }
     }
 }

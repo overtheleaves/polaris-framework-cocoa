@@ -8,10 +8,11 @@
 
 import Foundation
 
-class StellaAnimator {
+public class StellaAnimator {
     
     public typealias AnimatorAnimationsClosure = () -> ()
     public typealias AnimatorCompletionClosure = () -> ()
+    let defaultTimingFunction = CAMediaTimingFunction(controlPoints: 0.175, 0.885, 0.32, 1.275)
     
     struct AnimationParameters {
         
@@ -43,7 +44,7 @@ class StellaAnimator {
     ///     - animation: animation closure
     /// - Returns:
     ///     - a new StellaAnimator instance
-    static func addAnimation (duration: TimeInterval, delay: TimeInterval,
+    static public func addAnimation (duration: TimeInterval, delay: TimeInterval,
                               options: UIView.AnimationOptions,
                               damping: CGFloat? = nil, initialVelocity: CGFloat? = nil,
                             animation: @escaping AnimatorAnimationsClosure) -> StellaAnimator {
@@ -63,7 +64,7 @@ class StellaAnimator {
     ///     - animation: animation closure
     /// - Returns:
     ///     - self (for chaining)
-    func addAnimation(duration: TimeInterval, delay: TimeInterval, options: UIView.AnimationOptions,
+    public func addAnimation(duration: TimeInterval, delay: TimeInterval, options: UIView.AnimationOptions,
                       damping: CGFloat? = nil, initialVelocity: CGFloat? = nil,
                       animation: @escaping AnimatorAnimationsClosure) -> StellaAnimator {
         
@@ -76,7 +77,7 @@ class StellaAnimator {
     /// run animations serial order
     /// - Parameters:
     ///     - completion: complete function closure (optional)
-    func animateSerial(completion: AnimatorCompletionClosure?) {
+    public func animateSerial(completion: AnimatorCompletionClosure?) {
         if let (animation, parameter) = animations.first {
             
             if let damping = parameter.damping,
@@ -112,9 +113,10 @@ class StellaAnimator {
     /// run animations concurrently
     /// - Parameters:
     ///     - completion: complete function closure (optional)
-    func animateConcurrent(completion: AnimatorCompletionClosure?) {
+    public func animateConcurrent(completion: AnimatorCompletionClosure?) {
         
         CATransaction.begin()
+        CATransaction.setAnimationTimingFunction(defaultTimingFunction)
         CATransaction.setCompletionBlock({
             // remove all animations
             self.animations.removeAll()
@@ -130,16 +132,21 @@ class StellaAnimator {
                                delay: parameter.delay,
                                usingSpringWithDamping: damping,
                                initialSpringVelocity: initialSpringVelocity,
-                               options: parameter.options,
+                               options: [],
                                animations: animation,
                                completion: nil)
                 
             } else {
-                UIView.animate(withDuration: parameter.duration,
-                               delay: parameter.delay,
-                               options: parameter.options,
-                               animations: animation,
-                               completion: nil)
+//                UIView.animate(withDuration: parameter.duration,
+//                               delay: parameter.delay,
+//                               options: [],
+//                               animations: animation,
+//                               completion: nil)
+                
+                                UIView.animate(withDuration: parameter.duration,
+                                               animations: animation,
+                                               completion: nil)
+
             }
         }
         

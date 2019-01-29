@@ -25,6 +25,7 @@ open class PolarisUIView: UIView, PathRouterHandleProtocol, UIGestureRecognizerD
     func initTouch() {
         let action = #selector(self.onClickEventAction(_:))
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: action)
+        
         tapGestureRecognizer.delegate = self
         
         self.addGestureRecognizer(tapGestureRecognizer)

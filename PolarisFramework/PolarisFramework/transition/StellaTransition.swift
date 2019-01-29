@@ -9,14 +9,25 @@
 import Foundation
 
 public class StellaTransition {
-    public var useTransition = false
-    public var duration: TimeInterval = 1
     
-    var animator: StellaAnimator = StellaAnimator()
+    typealias MatchViewTuple = (UIView, Option)
+    
+    public var useTransition = false
+    public var duration: TimeInterval = 0.7
+    
+    // animation 3-steps
+    var warmUpAnimator: StellaAnimator = StellaAnimator()
+    var durationAnimator: StellaAnimator = StellaAnimator()
+    var stopAnimator: StellaAnimator = StellaAnimator()
+    
     var snapshots: [UIView] = []
+    var fromViews: [UIView] = []
     let defaultAnimationOptions = UIView.AnimationOptions.curveEaseInOut
     var containerView: UIView?
+    var matchViewIds: [String] = []
+    var matchViews: [String:MatchViewTuple] = [:]
     
+    // one-way transition
     public func transition(_ target: UIView, animations: [StellaAnimationType]) {
         
         if let snapshot = target.snapshotView(afterScreenUpdates: true) {
@@ -25,14 +36,14 @@ public class StellaTransition {
                 switch type {
                 case .fadeIn:
                     snapshot.alpha = 0.0
-                    let _ = animator.addAnimation(duration: duration,
+                    let _ = durationAnimator.addAnimation(duration: duration,
                                           delay: 0,
                                           options: defaultAnimationOptions) {
                                             snapshot.alpha = 1.0
                                         }
                 case .fadeOut:
                     snapshot.alpha = 1.0
-                    let _ = animator.addAnimation(duration: duration,
+                    let _ = durationAnimator.addAnimation(duration: duration,
                                           delay: 0,
                                           options: defaultAnimationOptions) {
                                             snapshot.alpha = 0.0
@@ -43,7 +54,7 @@ public class StellaTransition {
                                             width: 0, height: 0)
                     snapshot.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                     snapshot.layer.position = CGPoint(x: originalFrame.midX, y: originalFrame.midY)
-                    let _ = animator.addAnimation(duration: duration,
+                    let _ = durationAnimator.addAnimation(duration: duration,
                                                   delay: 0,
                                                   options: defaultAnimationOptions) {
                                                     snapshot.frame = originalFrame
@@ -56,7 +67,7 @@ public class StellaTransition {
                                             height: originalFrame.height * 1.3)
                     snapshot.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
                     snapshot.layer.position = CGPoint(x: originalFrame.midX, y: originalFrame.midY)
-                    let _ = animator.addAnimation(duration: duration,
+                    let _ = durationAnimator.addAnimation(duration: duration,
                                                   delay: 0,
                                                   options: defaultAnimationOptions) {
                                                     snapshot.frame = originalFrame
@@ -69,20 +80,95 @@ public class StellaTransition {
         }
     }
     
+    // two-way transition
+    public func matchTransition(_ id: String, target: UIView, option: Option = Option.useFromView) {
+        self.matchViewIds.append(id)
+        self.matchViews[id] = (target, option)
+    }
+    
+    func makeMatchAnimation(_ other: StellaTransition) {
+        
+        for id in self.matchViewIds {
+            
+            guard let (from, option) = self.matchViews[id]
+                else {
+                    print("cannot find matchView(id=\(id) in this context")
+                    continue
+            }
+            
+            guard let (to, _) = other.matchViews[id]
+                else {
+                    print("cannot find toView(id=\(id) in other transition")
+                    continue
+            }
+            
+            var snapshot: UIView?
+            
+            switch option {
+            case .useFromView:
+                snapshot = from.snapshotView(afterScreenUpdates: true)
+            case .useToView:
+                snapshot = to.snapshotView(afterScreenUpdates: true)
+            }
+            
+            if let snapshot = snapshot {
+                let finalFrame = frameOfViewInWindowsCoordinateSystem(to)
+                let finalLayer = to.layer
+                let originalFrame = frameOfViewInWindowsCoordinateSystem(from)
+
+                snapshots.append(snapshot)
+                fromViews.append(from)
+                snapshot.frame = from.frame
+                snapshot.layer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+                snapshot.layer.position = CGPoint(x: originalFrame.midX, y: originalFrame.midY)
+                snapshot.layer.cornerRadius = from.layer.cornerRadius
+                let _ = durationAnimator.addAnimation(duration: duration,
+                                      delay: 0,
+                                      options: defaultAnimationOptions) {
+                                        snapshot.frame = finalFrame
+                                        snapshot.layer.cornerRadius = finalLayer.cornerRadius
+                                        snapshot.layer.position = CGPoint(x: finalFrame.midX, y: finalFrame.midY)
+                                    }
+            }
+        }
+    }
+    
+    func initializeState(_ containerView: UIView) {
+        // init state: add all snapshots into containerView
+        self.snapshots.forEach({ (snapshot) in
+            containerView.addSubview(snapshot)
+        })
+        
+        // init state: hide all fromViews
+        self.fromViews.forEach { (v) in
+            v.isHidden = true
+        }
+    }
+    
+    func finalizeState() {
+        // final state: remove all snapshots from containerView
+        self.snapshots.forEach({ (snapshot) in
+            snapshot.removeFromSuperview()
+        })
+        
+        self.snapshots.removeAll()
+        
+        // final state: show all fromViews
+        self.fromViews.forEach({ (v) in
+            v.isHidden = false
+        })
+
+    }
+    
     public func animateConcurrent(completion: (() -> ())?) {
         
         if let containerView = self.containerView {
-            self.snapshots.forEach({ (snapshot) in
-                containerView.addSubview(snapshot)
-            })
             
-            self.animator.animateConcurrent {
+            initializeState(containerView)
+            
+            self.durationAnimator.animateConcurrent {
                 
-                self.snapshots.forEach({ (snapshot) in
-                    snapshot.removeFromSuperview()
-                })
-                
-                self.snapshots.removeAll()
+                self.finalizeState()
                 
                 if let _ = completion {
                     completion?()
@@ -94,16 +180,12 @@ public class StellaTransition {
     public func animateSerial(completion: (() -> ())?) {
         
         if let containerView = self.containerView {
-            self.snapshots.forEach({ (snapshot) in
-                containerView.addSubview(snapshot)
-            })
             
-            self.animator.animateSerial {
-                self.snapshots.forEach({ (snapshot) in
-                    snapshot.removeFromSuperview()
-                })
+            initializeState(containerView)
+            
+            self.durationAnimator.animateSerial {
                 
-                self.snapshots.removeAll()
+                self.finalizeState()
                 
                 if let _ = completion {
                     completion?()
@@ -125,6 +207,8 @@ public enum StellaAnimationType {
     case fadeIn
     case fadeOut
     case scale(direction: Direction)
+    case zoomIn
+    case zoomOut
 }
 
 public enum Direction {
@@ -132,4 +216,9 @@ public enum Direction {
     case down
     case left
     case right
+}
+
+public enum Option {
+    case useFromView
+    case useToView
 }

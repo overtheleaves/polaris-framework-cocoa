@@ -16,7 +16,7 @@ extension UITextField : Bindable {
     }
     
     public func updateValue(_ value: String) {
-        self.text = value
+        self.text = value        
     }
 }
 

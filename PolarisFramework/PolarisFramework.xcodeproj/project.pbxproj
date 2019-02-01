@@ -39,6 +39,8 @@
 		FED369A122028AE000B4F2A8 /* UIControls+Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED369A022028AE000B4F2A8 /* UIControls+Bindable.swift */; };
 		FED369A322028AFE00B4F2A8 /* NSObject+Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED369A222028AFE00B4F2A8 /* NSObject+Observable.swift */; };
 		FED369A62202984600B4F2A8 /* BlockSelector.h in Headers */ = {isa = PBXBuildFile; fileRef = FED3699E220289F200B4F2A8 /* BlockSelector.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FED369A92203D3FA00B4F2A8 /* Palette.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED369A82203D3FA00B4F2A8 /* Palette.swift */; };
+		FED369AB2203DF9500B4F2A8 /* StyleAttributedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED369AA2203DF9500B4F2A8 /* StyleAttributedLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -101,6 +103,8 @@
 		FED3699E220289F200B4F2A8 /* BlockSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockSelector.h; sourceTree = "<group>"; };
 		FED369A022028AE000B4F2A8 /* UIControls+Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControls+Bindable.swift"; sourceTree = "<group>"; };
 		FED369A222028AFE00B4F2A8 /* NSObject+Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Observable.swift"; sourceTree = "<group>"; };
+		FED369A82203D3FA00B4F2A8 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
+		FED369AA2203DF9500B4F2A8 /* StyleAttributedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleAttributedLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -231,6 +235,8 @@
 		FED369A72203D3AE00B4F2A8 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FED369A82203D3FA00B4F2A8 /* Palette.swift */,
+				FED369AA2203DF9500B4F2A8 /* StyleAttributedLabel.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -357,11 +363,13 @@
 				FED36989220128DC00B4F2A8 /* PolarisViewModel.swift in Sources */,
 				FE6C9F8721DF414100401BE6 /* Errors.swift in Sources */,
 				FE2778F521EC7E9100E3D1E2 /* PolarisUIViewController.swift in Sources */,
+				FED369AB2203DF9500B4F2A8 /* StyleAttributedLabel.swift in Sources */,
 				FED3699D220289C600B4F2A8 /* BlockSelector.m in Sources */,
 				FE6C9F8521DF414100401BE6 /* StringExtension.swift in Sources */,
 				FE27794821F174DA00E3D1E2 /* Global.swift in Sources */,
 				FE27793921EF524600E3D1E2 /* PathRouter.swift in Sources */,
 				FED3697521FBFBE200B4F2A8 /* DismissAnimationController.swift in Sources */,
+				FED369A92203D3FA00B4F2A8 /* Palette.swift in Sources */,
 				FE27797F21F6F55D00E3D1E2 /* PresentAnimationController.swift in Sources */,
 				FED369A322028AFE00B4F2A8 /* NSObject+Observable.swift in Sources */,
 				FED369A122028AE000B4F2A8 /* UIControls+Bindable.swift in Sources */,

@@ -16,4 +16,4 @@ FOUNDATION_EXPORT const unsigned char PolarisFrameworkVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <PolarisFramework/PublicHeader.h>
 
-
+#import "BlockSelector.h"

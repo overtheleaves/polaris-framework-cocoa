@@ -13,5 +13,9 @@ extension String {
         }
         
         return String(self[self.index(self.startIndex, offsetBy: 1)..<self.index(self.startIndex, offsetBy: 2)])
-    }    
+    }
+    
+    public static func isEmpty(str: String?) -> Bool {
+        return str != nil && str != ""
+    }
 }

@@ -31,6 +31,14 @@
 		FED3697521FBFBE200B4F2A8 /* DismissAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3697421FBFBE200B4F2A8 /* DismissAnimationController.swift */; };
 		FED3697A21FC1FB700B4F2A8 /* StellaTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3697921FC1FB700B4F2A8 /* StellaTransition.swift */; };
 		FED3697C21FC253B00B4F2A8 /* StellaAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3697B21FC253B00B4F2A8 /* StellaAnimator.swift */; };
+		FED36989220128DC00B4F2A8 /* PolarisViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED36988220128DC00B4F2A8 /* PolarisViewModel.swift */; };
+		FED3699622013F5C00B4F2A8 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3699522013F5C00B4F2A8 /* Observable.swift */; };
+		FED36998220140D000B4F2A8 /* Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED36997220140D000B4F2A8 /* Bindable.swift */; };
+		FED3699B2202895400B4F2A8 /* BlockSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED3699A2202895400B4F2A8 /* BlockSelector.swift */; };
+		FED3699D220289C600B4F2A8 /* BlockSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = FED3699C220289C600B4F2A8 /* BlockSelector.m */; };
+		FED369A122028AE000B4F2A8 /* UIControls+Bindable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED369A022028AE000B4F2A8 /* UIControls+Bindable.swift */; };
+		FED369A322028AFE00B4F2A8 /* NSObject+Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FED369A222028AFE00B4F2A8 /* NSObject+Observable.swift */; };
+		FED369A62202984600B4F2A8 /* BlockSelector.h in Headers */ = {isa = PBXBuildFile; fileRef = FED3699E220289F200B4F2A8 /* BlockSelector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -85,6 +93,14 @@
 		FED3697421FBFBE200B4F2A8 /* DismissAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissAnimationController.swift; sourceTree = "<group>"; };
 		FED3697921FC1FB700B4F2A8 /* StellaTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StellaTransition.swift; sourceTree = "<group>"; };
 		FED3697B21FC253B00B4F2A8 /* StellaAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StellaAnimator.swift; sourceTree = "<group>"; };
+		FED36988220128DC00B4F2A8 /* PolarisViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PolarisViewModel.swift; sourceTree = "<group>"; };
+		FED3699522013F5C00B4F2A8 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
+		FED36997220140D000B4F2A8 /* Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bindable.swift; sourceTree = "<group>"; };
+		FED3699A2202895400B4F2A8 /* BlockSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockSelector.swift; sourceTree = "<group>"; };
+		FED3699C220289C600B4F2A8 /* BlockSelector.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlockSelector.m; sourceTree = "<group>"; };
+		FED3699E220289F200B4F2A8 /* BlockSelector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockSelector.h; sourceTree = "<group>"; };
+		FED369A022028AE000B4F2A8 /* UIControls+Bindable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControls+Bindable.swift"; sourceTree = "<group>"; };
+		FED369A222028AFE00B4F2A8 /* NSObject+Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Observable.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +145,10 @@
 		FE6C9F7D21DF413800401BE6 /* PolarisFramework */ = {
 			isa = PBXGroup;
 			children = (
-				FED3697821FC011200B4F2A8 /* transition */,
+				FED369A72203D3AE00B4F2A8 /* UI */,
+				FED3699F22028AA700B4F2A8 /* TwoWayBinding */,
+				FED36987220128BF00B4F2A8 /* Base */,
+				FED3697821FC011200B4F2A8 /* Transition */,
 				FE27793821EF524600E3D1E2 /* PathRouter.swift */,
 				FE6C9EFE21DF022B00401BE6 /* DatabaseHelper.swift */,
 				FE2778EC21EC09C900E3D1E2 /* CBLDatabase.swift */,
@@ -168,7 +187,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		FED3697821FC011200B4F2A8 /* transition */ = {
+		FED3697821FC011200B4F2A8 /* Transition */ = {
 			isa = PBXGroup;
 			children = (
 				FE27797E21F6F55D00E3D1E2 /* PresentAnimationController.swift */,
@@ -176,7 +195,44 @@
 				FED3697921FC1FB700B4F2A8 /* StellaTransition.swift */,
 				FED3697B21FC253B00B4F2A8 /* StellaAnimator.swift */,
 			);
-			path = transition;
+			path = Transition;
+			sourceTree = "<group>";
+		};
+		FED36987220128BF00B4F2A8 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				FED36988220128DC00B4F2A8 /* PolarisViewModel.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		FED369992202892900B4F2A8 /* BlockSelector */ = {
+			isa = PBXGroup;
+			children = (
+				FED3699A2202895400B4F2A8 /* BlockSelector.swift */,
+				FED3699C220289C600B4F2A8 /* BlockSelector.m */,
+				FED3699E220289F200B4F2A8 /* BlockSelector.h */,
+			);
+			path = BlockSelector;
+			sourceTree = "<group>";
+		};
+		FED3699F22028AA700B4F2A8 /* TwoWayBinding */ = {
+			isa = PBXGroup;
+			children = (
+				FED369992202892900B4F2A8 /* BlockSelector */,
+				FED3699522013F5C00B4F2A8 /* Observable.swift */,
+				FED36997220140D000B4F2A8 /* Bindable.swift */,
+				FED369A022028AE000B4F2A8 /* UIControls+Bindable.swift */,
+				FED369A222028AFE00B4F2A8 /* NSObject+Observable.swift */,
+			);
+			path = TwoWayBinding;
+			sourceTree = "<group>";
+		};
+		FED369A72203D3AE00B4F2A8 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = UI;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -187,6 +243,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FE6C9F8021DF413800401BE6 /* PolarisFramework.h in Headers */,
+				FED369A62202984600B4F2A8 /* BlockSelector.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +299,7 @@
 				TargetAttributes = {
 					FE6C9F7B21DF413800401BE6 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1010;
 					};
 					FE6C9F8B21DF416F00401BE6 = {
 						CreatedOnToolsVersion = 10.1;
@@ -291,15 +349,22 @@
 			files = (
 				FE6C9FAC21E470AF00401BE6 /* DatabaseObject.swift in Sources */,
 				FE27797221F2CCC900E3D1E2 /* PolarisUIView.swift in Sources */,
+				FED3699B2202895400B4F2A8 /* BlockSelector.swift in Sources */,
+				FED36998220140D000B4F2A8 /* Bindable.swift in Sources */,
 				FE2778C721EB1E1200E3D1E2 /* DateExtension.swift in Sources */,
 				FE2778ED21EC09C900E3D1E2 /* CBLDatabase.swift in Sources */,
+				FED3699622013F5C00B4F2A8 /* Observable.swift in Sources */,
+				FED36989220128DC00B4F2A8 /* PolarisViewModel.swift in Sources */,
 				FE6C9F8721DF414100401BE6 /* Errors.swift in Sources */,
 				FE2778F521EC7E9100E3D1E2 /* PolarisUIViewController.swift in Sources */,
+				FED3699D220289C600B4F2A8 /* BlockSelector.m in Sources */,
 				FE6C9F8521DF414100401BE6 /* StringExtension.swift in Sources */,
 				FE27794821F174DA00E3D1E2 /* Global.swift in Sources */,
 				FE27793921EF524600E3D1E2 /* PathRouter.swift in Sources */,
 				FED3697521FBFBE200B4F2A8 /* DismissAnimationController.swift in Sources */,
 				FE27797F21F6F55D00E3D1E2 /* PresentAnimationController.swift in Sources */,
+				FED369A322028AFE00B4F2A8 /* NSObject+Observable.swift in Sources */,
+				FED369A122028AE000B4F2A8 /* UIControls+Bindable.swift in Sources */,
 				FE6C9F8421DF414100401BE6 /* DatabaseHelper.swift in Sources */,
 				FED3697A21FC1FB700B4F2A8 /* StellaTransition.swift in Sources */,
 				FE6C9F8621DF414100401BE6 /* Reflection.swift in Sources */,
@@ -448,6 +513,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
@@ -470,6 +536,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = overtheleaves.PolarisFramework;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -479,6 +546,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
@@ -524,6 +592,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = overtheleaves.PolarisFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -547,6 +616,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = overtheleaves.PolarisFrameworkTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

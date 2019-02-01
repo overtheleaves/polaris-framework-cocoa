@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "static Reflection.getTypeOf(property:):Reflection.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "class_getSuperclass(objectClass)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "ReflectionTests.testGetTypesOfProperties():ReflectionTests.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.addBatch(_:):DatabaseHelper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "doc.id">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static DatabaseHelper.prepare():DatabaseHelper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "String(simpleName)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.convertIsoToDate(iso:):DatabaseHelper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.resultToObject&lt;A&gt;(_:result:):DatabaseHelper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "result.keys">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static Reflection.getTypesOfProperties(in:):Reflection.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "class_getProperty(clazz, &quot;arr&quot;)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "PathRoutedUIViewController.handle(_:params:):PathRoutedUIViewController.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "self.params">
+            </PersistentString>
+            <PersistentString
+               value = "self.openFrom">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "SubObject.isEqual(_:):DatabaseHelperTests.swift">
+      </ContextState>
+      <ContextState
+         contextName = "static DatabaseObject.object&lt;A&gt;(_:id:dict:):DatabaseObject.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "Reflection.getTypesOfProperties(in: type)">
+            </PersistentString>
+            <PersistentString
+               value = "properties[name]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "DatabaseHelperTests.testAdd_AllType():DatabaseHelperTests.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "ret">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "AllTypeTestObject.isEqual(_:):DatabaseHelperTests.swift">
+      </ContextState>
+      <ContextState
+         contextName = "PathRouter.route(_:):PathRouter.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.objects&lt;A&gt;(_:):DatabaseHelper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dictObj.keys">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.resolveObjects&lt;A&gt;(_:dict:):DatabaseHelper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dateFormatter.date(from: isoDate as! String)">
+            </PersistentString>
+            <PersistentString
+               value = "isoDate as! String">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TrieNode.init(_:value:):URIResolver.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "key[start..&lt;end]">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.resolveObjects&lt;A&gt;(_:dict:):CBLDatabase.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "doc.string(forKey: DatabaseHelper.FIELD_META_TYPE)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "static DatabaseObject.object&lt;A&gt;(_:id:dict:):DatabaseHelper.swift">
+      </ContextState>
+      <ContextState
+         contextName = "DatabaseHelperTests.testAdd():DatabaseHelperTests.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "dogs?[0].arr.count">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "TrieNode.add(_:value:):URIResolver.swift">
+      </ContextState>
+      <ContextState
+         contextName = "CBLDatabase.add(_:):DatabaseHelper.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "doc.count">
+            </PersistentString>
+            <PersistentString
+               value = "doc.id">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

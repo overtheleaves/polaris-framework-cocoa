@@ -105,6 +105,7 @@
 		FED369A222028AFE00B4F2A8 /* NSObject+Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Observable.swift"; sourceTree = "<group>"; };
 		FED369A82203D3FA00B4F2A8 /* Palette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Palette.swift; sourceTree = "<group>"; };
 		FED369AA2203DF9500B4F2A8 /* StyleAttributedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleAttributedLabel.swift; sourceTree = "<group>"; };
+		FED369BD2204385D00B4F2A8 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,9 +130,10 @@
 		FE6C9EE721DF01CE00401BE6 = {
 			isa = PBXGroup;
 			children = (
+				FED369BD2204385D00B4F2A8 /* Package.swift */,
+				FED369BC2204382A00B4F2A8 /* Sources */,
 				FE6C9EFD21DF022B00401BE6 /* CouchbaseLiteSwift.framework */,
-				FE6C9F7D21DF413800401BE6 /* PolarisFramework */,
-				FE6C9F8D21DF416F00401BE6 /* PolarisFrameworkTests */,
+				FE6C9F8D21DF416F00401BE6 /* Tests */,
 				FE6C9EF221DF01CE00401BE6 /* Products */,
 				FE6C9F9821DF422900401BE6 /* Frameworks */,
 			);
@@ -171,7 +173,7 @@
 			path = PolarisFramework;
 			sourceTree = "<group>";
 		};
-		FE6C9F8D21DF416F00401BE6 /* PolarisFrameworkTests */ = {
+		FE6C9F8D21DF416F00401BE6 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				FE27793A21EF56B200E3D1E2 /* PathRouterTests.swift */,
@@ -180,7 +182,7 @@
 				FE6C9FA721E1AE9300401BE6 /* DatabaseHelperTests.swift */,
 				FE2778F221EC1F5500E3D1E2 /* PathTrieTests.swift */,
 			);
-			path = PolarisFrameworkTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		FE6C9F9821DF422900401BE6 /* Frameworks */ = {
@@ -239,6 +241,14 @@
 				FED369AA2203DF9500B4F2A8 /* StyleAttributedLabel.swift */,
 			);
 			path = UI;
+			sourceTree = "<group>";
+		};
+		FED369BC2204382A00B4F2A8 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				FE6C9F7D21DF413800401BE6 /* PolarisFramework */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -534,7 +544,7 @@
 					"$(PROJECT_DIR)/PolarisFramework",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PolarisFramework/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/PolarisFramework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -567,7 +577,7 @@
 					"$(PROJECT_DIR)/PolarisFramework",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = PolarisFramework/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Sources/PolarisFramework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
